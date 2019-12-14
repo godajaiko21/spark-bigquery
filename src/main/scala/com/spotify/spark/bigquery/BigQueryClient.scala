@@ -146,7 +146,7 @@ private[bigquery] class BigQueryClient(conf: Configuration) {
   private def stagingDataset(location: String): DatasetReference = {
     // Create staging dataset if it does not already exist
     val prefix = conf.get(STAGING_DATASET_PREFIX, STAGING_DATASET_PREFIX_DEFAULT)
-    conf.setIfUnset(STAGING_DATASET_ID, prefix + location.toLowerCase)
+    conf.setIfUnset(STAGING_DATASET_ID, prefix + location.toLowerCase.replaceAll("-", "_"))
     val datasetId = conf.get(STAGING_DATASET_ID)
     try {
       bigquery.datasets().get(projectId, datasetId).execute()
